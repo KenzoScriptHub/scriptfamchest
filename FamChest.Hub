@@ -1,0 +1,48 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TeleportService = game:GetService("TeleportService")
+local Workspace = game:GetService("Workspace")
+
+-- Đổi tên script và icon
+script.Name = "KenzoAutoFarmChest"
+script.Icon = "(https://www.roblox.com/catalog/89986893594531)" -- Thay thế bằng URL icon mong muốn
+
+-- Hàm lấy rương
+local function getRuong()
+    local ruong = Workspace:FindFirstChild("Ruong")
+    if ruong then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ruong.CFrame
+        wait(1)
+        -- Thay thế bằng mã lấy rương cụ thể trong Blox Fruit
+        print("Lấy rương thành công")
+    end
+end
+
+-- Hàm đổi server
+local function doiServer()
+    local success, errorMessage = pcall(function()
+        TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId)
+    end)
+    if not success then
+        print("Đổi server thất bại: " .. errorMessage)
+    end
+end
+
+-- Tự động lấy rương và đổi server
+while true do
+    wait(60) -- Delay 1 phút
+    local ruong = Workspace:FindFirstChild("Ruong")
+    if not ruong then
+        doiServer()
+    else
+        getRuong()
+    end
+end
+
+-- Xử lý sự kiện người chơi tham gia
+local function onPlayerJoin(player)
+    print("Người chơi " .. player.Name .. " đã tham gia")
+end
+
+-- Liên kết sự kiện
+Players.PlayerAdded:Connect(onPlayerJoin)
